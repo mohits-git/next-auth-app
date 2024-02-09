@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 export async function connect() {
-    const uri = process.env.MONGO_URI || "mongodb://localhost:27017/next-auth-app";
+    const uri = process.env.DB_URI;
     try {
         mongoose.connect(uri);
         const connection = mongoose.connection;
@@ -11,7 +11,7 @@ export async function connect() {
             console.log("Something went wrong :(", err);
             process.exit();
         })
-    } catch(error) {
+    } catch (error) {
         console.log("something went wrong");
         console.log(error);
     }
