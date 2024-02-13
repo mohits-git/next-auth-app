@@ -1,7 +1,6 @@
 "use client";
 
 import axios from "axios";
-import { errorToJSON } from "next/dist/server/render";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -9,8 +8,6 @@ export default function VerifyEmail() {
     const [token, setToken] = useState('');
     const [verified, setVerified] = useState(false);
     const [error, setError] = useState(false);
-    const [type, setType] = useState("VERIFY");
-
 
     useEffect(() => {
         const urlToken = window.location.search.split('=')[1];
