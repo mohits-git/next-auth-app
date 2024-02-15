@@ -1,12 +1,15 @@
 "use client";
 
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function VerifyEmail() {
+    const router = useRouter();
     const [token, setToken] = useState('');
     const [newPass, setNewPass] = useState('');
     const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const urlToken = window.location.search.split('=')[1];
@@ -14,12 +17,18 @@ export default function VerifyEmail() {
     }, [token])
 
     const submitReset = async () => {
+        setError(false);
+        setLoading(true);
         if (!newPass) return;
 
         try {
             await axios.post('/api/users/resetpassword', { token, newPass });
+            await axios.get('/api/users/logout');
+            router.push('/login');
         } catch (error: any) {
             setError(true);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -33,7 +42,12 @@ export default function VerifyEmail() {
                 onChange={(e) => setNewPass(e.target.value)}
             />
 
-            <button className="p-2 px-2 mt-2 border-2 border-white rounded-lg hover:bg-gray-800 active:bg-gray-700" onClick={submitReset}>Reset Password </button>
+            <button className="p-2 px-2 mt-2 border-2 border-white rounded-lg hover:bg-gray-800 active:bg-gray-700"
+                onClick={submitReset}
+                disabled={loading}
+            >
+                {loading ? "Please wait..." : "Reset Password"}
+            </button>
             {error && (
                 <div>
                     <h2 className="text-2xl text-red-500">Error While Verifying</h2>
