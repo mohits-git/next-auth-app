@@ -10,9 +10,11 @@ export default function LoginPage() {
     const [user, setUser] = useState({ email: "", password: "" });
     const [buttonDisable, setButtonDisable] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
 
     const onLogin = async () => {
         try {
+            setError(false);
             setLoading(true);
             const response = await axios.post("/api/users/login", user);
             console.log("Login success", response.data);
@@ -20,7 +22,8 @@ export default function LoginPage() {
         } catch (error: any) {
             console.log("Login Failed", error.message);
             toast.error(error.message);
-        } finally{
+            setError(true);
+        } finally {
             setLoading(false);
         }
     }
@@ -64,6 +67,11 @@ export default function LoginPage() {
                     {buttonDisable ? "Enter Details" : "Log In"}
                 </button>
                 <Link href={'/signup'} className="mt-2 hover:underline hover:text-blue-400">Visit Signup Page</Link>
+                {error && (
+                    <div>
+                        <h2 className="text-2xl text-red-500">Error While Verifying</h2>
+                    </div>
+                )}
             </div>
         </>
     )
