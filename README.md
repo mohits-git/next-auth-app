@@ -1,3 +1,4 @@
+**feat**: [Chai Aur Code](https://www.youtube.com/@chaiaurcode)
 # Authentication app
 This is a simple authentication app using 
 - NextJS
